@@ -41,6 +41,51 @@ activities = {
     }
 }
 
+# Additional activities
+activities.update({
+    # Sports
+    "Soccer Team": {
+        "description": "Competitive soccer team practicing drills and playing matches",
+        "schedule": "Tuesdays and Thursdays, 4:00 PM - 6:00 PM",
+        "max_participants": 22,
+        "participants": ["alex@mergington.edu"]
+    },
+    "Swimming Club": {
+        "description": "Swim training and intra-school competitions",
+        "schedule": "Mondays and Wednesdays, 5:00 PM - 6:30 PM",
+        "max_participants": 25,
+        "participants": []
+    },
+
+    # Artistic
+    "Drama Club": {
+        "description": "Acting, play production, and stagecraft",
+        "schedule": "Fridays, 4:00 PM - 6:00 PM",
+        "max_participants": 30,
+        "participants": ["linda@mergington.edu"]
+    },
+    "Art Workshop": {
+        "description": "Painting, drawing, and mixed-media projects",
+        "schedule": "Wednesdays, 3:30 PM - 5:30 PM",
+        "max_participants": 18,
+        "participants": ["noah@mergington.edu"]
+    },
+
+    # Intellectual
+    "Debate Team": {
+        "description": "Competitive debate training and tournaments",
+        "schedule": "Mondays and Thursdays, 3:30 PM - 5:00 PM",
+        "max_participants": 16,
+        "participants": ["grace@mergington.edu"]
+    },
+    "Science Club": {
+        "description": "Hands-on experiments, science fairs, and guest lectures",
+        "schedule": "Tuesdays, 3:30 PM - 5:00 PM",
+        "max_participants": 20,
+        "participants": ["liam@mergington.edu"]
+    }
+})
+
 
 @app.get("/")
 def root():
@@ -61,7 +106,11 @@ def signup_for_activity(activity_name: str, email: str):
 
     # Get the specific activity
     activity = activities[activity_name]
+    # Validate student is not already signed up
+    if email in activity["participants"]:
+        raise HTTPException(status_code=400, detail="Student is already signed up for this activity")
 
     # Add student
+    
     activity["participants"].append(email)
     return {"message": f"Signed up {email} for {activity_name}"}
